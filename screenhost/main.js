@@ -6,11 +6,21 @@ let overlayWindow;
 const screenshots = new Screenshots();
 
 app.on("ready", () => {
-  mainWindow = new BrowserWindow({ show: false });
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  
+  app.commandLine.appendSwitch('disable-renderer-backgrounding');
+  mainWindow = new BrowserWindow({
+    show: false,
+    width: width,
+    height: height,
+    transparent: true,
+    frame: false
+  });
   
   mainWindow.loadFile("select_area.html");
 
   globalShortcut.register("ctrl+1", () => {
+    mainWindow.show();
     createOverlayWindow();
   });
 });
